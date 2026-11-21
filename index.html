@@ -1,0 +1,177 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spellglass · Webcam Magic</title><style>*{box-sizing:border-box}body{margin:0;background:#101521;color:#f4eafc;font:16px system-ui,sans-serif;background:radial-gradient(ellipse at top,#29203d,#101521 65%);min-height:100vh}main{max-width:1000px;margin:auto;padding:clamp(20px,5vw,54px)}header{margin-bottom:24px}small,label{letter-spacing:.15em;color:#cfb4fa;text-transform:uppercase}h1{font:clamp(42px,8vw,76px) Georgia;margin:8px 0}p{color:#c7bfd5;margin:8px 0;line-height:1.45}.stage{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid #77638f;border-radius:20px;background:radial-gradient(circle,#3c2b54,#141a28 70%)}video,canvas,.idle{position:absolute;inset:0;width:100%;height:100%}video{object-fit:contain;transform:scaleX(-1)}canvas{pointer-events:none}.idle{display:grid;place-content:center;text-align:center;gap:12px;padding:16px}.idle[hidden]{display:none}.stage.orb-demo .idle{visibility:hidden}.sigil{font-size:clamp(36px,9vw,96px);color:#d9bdff;text-shadow:0 0 26px #b17dff;line-height:1}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;align-items:center}button{cursor:pointer;border:1px solid #88739f;border-radius:9px;padding:10px 14px;color:#fbf3ff;background:#2d243e;font:inherit}button:first-child{background:#d8befa;color:#1b1128}button:disabled{opacity:.55;cursor:default}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:20px}.cards button{text-align:left;background:#211b31;color:#f4eafc}.cards span{display:block;font-size:.86rem;margin-top:5px;color:#c7bfd5}#status{min-height:2.8em}footer{color:#c7bfd5;font-size:.85rem;margin-top:20px}.trial{margin:18px 0;padding:16px;background:#201a30;border:1px solid #645374;border-radius:12px}.orb-card{background:radial-gradient(ellipse at top right,#30325f,#201a30 65%)}.orb-card h2{font:1.6rem Georgia,serif;margin:5px 0}.orb-card button{margin-top:8px}.practice{font-size:.88rem;margin-top:10px}.grimoire{margin-top:26px;border-top:1px solid #645374}.grimoire h2{font:1.45rem Georgia,serif}.grimoire dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.grimoire dl div{padding:12px;border:1px solid #58466e;border-radius:8px;background:#201a30}.grimoire dt{color:#e9cefb;font-weight:650}.grimoire dd{margin:5px 0 0;color:#c7bfd5;font-size:.85rem}.trial meter{display:block;width:100%;height:12px;margin-top:8px;accent-color:#c79cfb}.trial strong{display:block;margin-top:10px;color:#f4eafc}.cards button:hover{border-color:#d8befa}</style></head><body><main><header><small>Arcane atelier / practice chamber</small><h1>Spellglass</h1><p>Cast with one hand, fuse spells, or shape a 3D star with both hands.</p></header><div class="stage" id="stage"><video id="video" autoplay muted playsinline></video><div class="idle" id="idle"><div class="sigil" aria-hidden="true">✧</div><strong>The chamber awaits</strong><p>Enable your camera or click two different spell cards to try a fusion.</p></div><canvas id="fx" aria-hidden="true"></canvas></div><div class="controls"><button id="start">Enable camera</button><button id="stop" disabled>Stop camera</button></div><p id="status" role="status">Camera off. Spell previews do not need permission.</p><section class="trial" aria-label="Spell fusion"><small>Fusion window</small><p>Cast two different spells within 3 seconds. Either order works.</p><strong id="step" role="status">No spell queued.</strong><meter id="charge" min="0" max="1" value="0" aria-label="Time remaining to fuse"></meter></section><div class="cards" aria-label="Basic spells and clickable practice controls"><button data-spell="ward">✧ Moon Ward<span>Hold an open palm still for half a second</span></button><button data-spell="spark">✦ Star Bloom<span>Pinch your thumb and index finger once</span></button><button data-spell="sweep">↝ Gale Ribbon<span>Swipe an open hand sideways</span></button></div><p class="practice">No camera? Click two different cards within 3 seconds to practice the combo.</p><section class="trial orb-card" aria-labelledby="orb-title"><small>Two-hand spell · 3D</small><h2 id="orb-title">◉ Parallax Orb</h2><p>Hold both hands apart at chest height and pinch your thumb and index finger on each hand. Keep both pinches held. Spread your hands to grow the orb, tilt the line between them to turn it, and move both hands toward the camera to bring it forward. To throw, move both hands and release either pinch while they’re still moving. Push toward the webcam to send the orb closer and make it grow; pull both hands back toward your chest to send it away and make it shrink. Combine either with a sideways flick for a diagonal throw. Release while still to dissolve it.</p><button id="orb-preview" type="button">Preview 3D orb</button> <button id="throw-preview" type="button">Preview toward</button> <button id="away-preview" type="button">Preview away</button></section><section class="trial orb-card" aria-labelledby="coil-title"><small>Two-hand spell · 3D charge</small><h2 id="coil-title">⟲ Aether Coil</h2><p>Show both open palms to the camera, hold them apart and still for about one second, then pinch with both hands to summon a charged orb. The charge is spent on your next throw, which leaves a golden trail and a larger burst.</p><strong id="coil-status" role="status">Orb charge: empty</strong><meter id="coil-meter" min="0" max="1" value="0" aria-label="Aether Coil charge"></meter><button id="coil-preview" type="button">Preview charge</button><p class="practice" id="coil-demo-status">Preview charge, then preview either throw to see the powered-up impact.</p></section><section class="grimoire" aria-labelledby="recipes"><h2 id="recipes">Fusion recipes</h2><dl><div><dt>✶ Astral Aegis</dt><dd>Moon Ward + Star Bloom</dd></div><div><dt>◈ Tempest Gate</dt><dd>Moon Ward + Gale Ribbon</dd></div><div><dt>✷ Cometstorm</dt><dd>Star Bloom + Gale Ribbon</dd></div></dl></section><footer>Camera frames are processed in your browser, not recorded or uploaded by this page. The tracker downloads its model when you enable the camera.</footer></main><script>
+const $=id=>document.getElementById(id), video=$('video'), canvas=$('fx'), stage=$('stage'), status=$('status'), start=$('start'), stop=$('stop'), idle=$('idle'), ctx=canvas.getContext('2d');
+const spells={ward:['Moon Ward',190],spark:['Star Bloom',47],sweep:['Gale Ribbon',285],aegis:['Astral Aegis',53],gate:['Tempest Gate',177],comet:['Cometstorm',26]},reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const recipes={'spark+ward':'aegis','sweep+ward':'gate','spark+sweep':'comet'},step=$('step'),charge=$('charge'),windowMs=3000;
+let stream,modelPromise,model,epoch=0,lastVideo=-1,lastTrack=0,wasPinch=false,point=null,effects=[],anchor=null,openPath=[],heldWard=false,gestureAt=-Infinity,lastSeen=-Infinity,rearmAt=0;
+let pending=null,fused=null;
+function cue(text,value=0){if(step.textContent!==text)step.textContent=text;charge.value=value}
+function updateFusion(t){if(pending){const left=pending.until-t;if(left>0){cue((pending.source==='practice'?'Practice · ':'')+spells[pending.kind][0]+' queued — cast a different spell.',Math.min(1,left/windowMs));return}pending=null}if(fused&&t<fused.until){cue((fused.source==='practice'?'Practice fusion: ':'Fusion: ')+spells[fused.kind][0]);return}cue('No spell queued.')}
+function resize(){const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(stage.clientWidth*dpr);canvas.height=Math.round(stage.clientHeight*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)} new ResizeObserver(resize).observe(stage);resize();
+function message(s){if(status.textContent!==s)status.textContent=s}
+function cast(kind,p,t,source='camera',dir){
+  const sameSource=pending&&pending.source===source&&t<pending.until;const fusion=sameSource&&recipes[[pending.kind,kind].sort().join('+')];
+  if(fusion){dir=dir||pending.dir;pending=null;fused={kind:fusion,until:t+2000,source}}
+  else if(!sameSource){pending={kind,source,until:t+windowMs,dir};fused=null}
+  const effect=fusion||kind;effects.push({kind:effect,x:p.x,y:p.y,t,h:spells[effect][1],dir});if(effects.length>10)effects.shift();
+  if(source==='camera')message((fusion?'Fusion cast: ':'Cast: ')+spells[effect][0]);updateFusion(t);
+}
+for(const b of document.querySelectorAll('[data-spell]'))b.onclick=()=>cast(b.dataset.spell,{x:stage.clientWidth/2,y:stage.clientHeight/2},performance.now(),'practice');
+let orb=null,pairStart=null,pairSeen=-Infinity,singleAfter=0,orbDemo=-Infinity,throwDemo=-Infinity,flights=[],blasts=[];
+let coil=null,banked=false,demoBanked=false,coilDemo=-Infinity;const coilStatus=$('coil-status'),coilMeter=$('coil-meter'),demoStatus=$('coil-demo-status');
+function chargeCue(text,level){if(coilStatus.textContent!==text)coilStatus.textContent=text;coilMeter.value=level}
+$('orb-preview').onclick=()=>{orbDemo=performance.now();stage.scrollIntoView({block:'nearest'})};
+function previewThrow(sign){const now=performance.now(),w=stage.clientWidth,h=stage.clientHeight;orbDemo=coilDemo=-Infinity;throwDemo=now;launchOrb({x:w*.43,y:h*.54,gap:Math.min(w,h)*.68,tilt:-.18,depth:-.25,charged:demoBanked},now,w*(sign>0?.11:.37),-h*.11,sign*(sign>0?4.1:7.4),true);demoBanked=false;demoStatus.textContent='Preview charge, then preview either throw to see the powered-up impact.';stage.scrollIntoView({block:'nearest'})}
+$('throw-preview').onclick=()=>previewThrow(1);$('away-preview').onclick=()=>previewThrow(-1);
+$('coil-preview').onclick=()=>{orbDemo=-Infinity;coilDemo=performance.now();demoBanked=true;demoStatus.textContent='Preview orb charged. Choose Preview toward or Preview away.';stage.scrollIntoView({block:'nearest'})};
+function resetHand(){point=null;anchor=null;openPath=[];heldWard=false;wasPinch=false;lastSeen=-Infinity;gestureAt=-Infinity;rearmAt=0;orb=null;pairStart=null;pairSeen=-Infinity;singleAfter=0;orbDemo=-Infinity;throwDemo=-Infinity;flights=[];blasts=[];coil=null;banked=false;demoBanked=false;coilDemo=-Infinity;demoStatus.textContent='Preview charge, then preview either throw to see the powered-up impact.';chargeCue('Orb charge: empty',0)}
+function shutdown(text='Camera off. Click a spell to preview it.'){epoch++;stream?.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;idle.hidden=false;start.disabled=false;stop.disabled=true;resetHand();pending=null;fused=null;effects=[];updateFusion(performance.now());message(text)}
+stop.onclick=()=>shutdown();window.addEventListener('pagehide',()=>shutdown());
+async function load(){const base='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21';const {FilesetResolver,HandLandmarker}=await import(base+'/vision_bundle.mjs');return HandLandmarker.createFromOptions(await FilesetResolver.forVisionTasks(base+'/wasm'),{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task'},runningMode:'VIDEO',numHands:2});}
+start.onclick=async()=>{const id=++epoch;start.disabled=true;stop.disabled=false;message('Waiting for camera permission…');try{if(!navigator.mediaDevices?.getUserMedia)throw Error('Camera access requires HTTPS or localhost and a preview that allows the camera.');const feed=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}});if(id!==epoch){feed.getTracks().forEach(t=>t.stop());return}stream=feed;feed.getVideoTracks()[0].addEventListener('ended',()=>{if(id===epoch)shutdown('Camera disconnected.');});video.srcObject=stream;await video.play();if(id!==epoch)return;idle.hidden=true;message('Loading the hand tracker…');modelPromise??=load().catch(e=>{modelPromise=null;throw e});model=await modelPromise;if(id!==epoch)return;lastVideo=-1;pending=null;fused=null;updateFusion(performance.now());message('Camera active. Use one hand for basic spells or pinch with both hands for Parallax Orb.');}catch(e){if(id!==epoch)return;shutdown(e.name==='NotAllowedError'?'Camera access was blocked. Check browser permissions or use spell previews.':e.name==='NotFoundError'?'No camera found. You can still preview spells.':'Unable to start tracking. '+(e.message||'Try again or use spell previews.'));}};
+function cameraPoint(p){const w=stage.clientWidth,h=stage.clientHeight,s=Math.min(w/video.videoWidth,h/video.videoHeight),vw=video.videoWidth*s,vh=video.videoHeight*s;return{x:(w-vw)/2+(1-p.x)*vw,y:(h-vh)/2+p.y*vh}}
+function chargeWithPalms(t,l,r){
+  const unit=Math.min(stage.clientWidth,stage.clientHeight),gap=Math.hypot(r.palm.x-l.palm.x,r.palm.y-l.palm.y);
+  if(banked||!l.open||!r.open||l.ratio<.55||r.ratio<.55||gap<unit*.28){if(coil&&!coil.done){coil=null;chargeCue('Orb charge: empty',0)}return false}
+  const move=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);if(!coil||coil.done||move(l.palm,coil.anchorL)>unit*.08||move(r.palm,coil.anchorR)>unit*.08)coil={start:t,anchorL:l.palm,anchorR:r.palm};
+  coil.l=l.palm;coil.r=r.palm;coil.fill=Math.min(1,(t-coil.start)/1000);chargeCue('Charging · hold both palms still',coil.fill);
+  if(coil.fill===1){banked=true;coil.done=t;chargeCue('Orb charged · ready for your next throw',1);message('Aether Coil charged your next Parallax Orb. Pinch both hands to summon it.')}else message('Aether Coil · Hold both palms still to charge.');return true;
+}
+function orbGesture(t,hands){
+  if(hands.length<2){pairStart=null;if(coil&&!coil.done&&t-pairSeen>150){coil=null;chargeCue('Orb charge: empty',0)}if(t-pairSeen<180){point=null;return true}if(orb&&!orb.end){orb.end=t;singleAfter=t+300;message('Parallax Orb dissolved.')}return false}
+  pairSeen=t;singleAfter=t+260;point=null;anchor=null;openPath=[];heldWard=false;wasPinch=true;
+  const aspect=video.videoWidth/video.videoHeight;
+  const metrics=hands.map(h=>{const d=(a,b)=>Math.hypot((h[a].x-h[b].x)*aspect,h[a].y-h[b].y);return{open:[[8,6],[12,10],[16,14],[20,18]].filter(([tip,joint])=>d(0,tip)>d(0,joint)*1.09).length>=3,ratio:d(4,8)/Math.max(.015,d(0,9)),size:(d(0,9)+d(5,17))/2,palm:cameraPoint(h[9]),tip:cameraPoint({x:(h[4].x+h[8].x)/2,y:(h[4].y+h[8].y)/2})}}).sort((a,b)=>a.tip.x-b.tip.x);
+  const [l,r]=metrics,x=(l.tip.x+r.tip.x)/2,y=(l.tip.y+r.tip.y)/2,dx=r.tip.x-l.tip.x,dy=r.tip.y-l.tip.y,gap=Math.hypot(dx,dy),size=(l.size+r.size)/2,tilt=Math.atan2(dy,dx);
+  const live=orb&&!orb.end,threshold=live?.55:.42,sample={x:(l.palm.x+r.palm.x)/2,y:(l.palm.y+r.palm.y)/2,size,t};
+  if(live){orb.motion.push(sample);while(orb.motion.length>1&&orb.motion[0].t<t-245)orb.motion.shift()}
+  if(l.ratio>=threshold||r.ratio>=threshold){pairStart=null;if(live){if(!throwFromGesture(orb,sample)){orb.end=t;message('Parallax Orb dissolved. Flick and release to throw it.')}return true}if(chargeWithPalms(t,l,r))return true;if(!flights.some(f=>!f.demo)&&!blasts.some(b=>!b.demo)&&(!orb||t-orb.end>700))message(banked?'Aether Coil ready. Pinch both hands for a charged orb.':'Pinch both hands for Parallax Orb, or hold both palms open to charge.');return true}
+  if(coil&&!coil.done){coil=null;chargeCue('Orb charge: empty',0)}
+  if(!live){if(gap<stage.clientWidth*.085){pairStart=null;message('Move your hands a little farther apart.');return true}if(pairStart===null)pairStart=t;if(t-pairStart<155)return true;orb={x,y,gap,base:size,depth:0,tilt,l:l.tip,r:r.tip,start:t,end:0,charged:banked,motion:[sample]};message(banked?'Charged Parallax Orb · Move and release to throw.':'Parallax Orb · Move and release to throw in any direction.');return true}
+  const mix=(old,next)=>old*.72+next*.28,depth=Math.max(-.9,Math.min(1.3,Math.log(Math.max(.01,size)/Math.max(.01,orb.base))*2.45));orb.x=mix(orb.x,x);orb.y=mix(orb.y,y);orb.gap=mix(orb.gap,gap);orb.tilt+=.14*Math.atan2(Math.sin(2*(tilt-orb.tilt)),Math.cos(2*(tilt-orb.tilt)));orb.depth=mix(orb.depth,depth);orb.l=l.tip;orb.r=r.tip;return true;
+}
+function throwFromGesture(o,s){
+  const sample=o.motion.find(p=>s.t-p.t>=70&&s.t-p.t<=225);if(!sample)return false;
+  const dt=(s.t-sample.t)/1000,dx=s.x-sample.x,dy=s.y-sample.y,unit=Math.min(stage.clientWidth,stage.clientHeight),dist=Math.hypot(dx,dy),rate=dist/dt;
+  const approach=Math.log(Math.max(.01,s.size)/Math.max(.01,sample.size)),zrate=approach/dt,depthThrow=Math.abs(approach)>.095&&Math.abs(zrate)>.53,planeThrow=dist>unit*.075&&rate>unit*.58;
+  if(!depthThrow&&!planeThrow)return false;
+  const speed=planeThrow?Math.max(unit*.93,Math.min(unit*3.5,rate*1.36))/Math.max(1,rate):0;
+  const vz=depthThrow?Math.sign(zrate)*Math.min(13,Math.max(zrate>0?3.8:5.7,Math.abs(zrate)*7.2)):0;
+  launchOrb(o,s.t,dx/dt*speed,dy/dt*speed,vz,false);if(o.charged){banked=false;chargeCue('Orb charge: empty',0)}orb=null;return true;
+}
+function launchOrb(o,t,vx,vy,vz,demo){flights.push({x:o.x,y:o.y,gap:o.gap,depth:o.depth,tilt:o.tilt,start:t,vx,vy,vz,demo,charged:o.charged});if(flights.length>8)flights.shift();if(!demo)message((o.charged?'Charged Parallax Orb':'Parallax Orb')+(vz>0?' launched toward you!':vz<0?' launched into the distance!':' launched!'))}
+function track(t){
+  const hands=model.detectForVideo(video,t).landmarks;if(orbGesture(t,hands))return;
+  const hand=hands[0];if(!hand){point=null;if(t-lastSeen>155){anchor=null;openPath=[];heldWard=false;wasPinch=false}return}lastSeen=t;
+  const a=video.videoWidth/video.videoHeight,dist=(i,j)=>Math.hypot((hand[i].x-hand[j].x)*a,hand[i].y-hand[j].y),size=Math.max(.015,dist(0,9));const p=hand[9],sample={x:p.x,y:p.y,t};point=cameraPoint(p);
+  const pinch=dist(4,8)<size*(wasPinch?.52:.38),rise=pinch&&!wasPinch;wasPinch=pinch;
+  const open=!pinch&&[[8,6],[12,10],[16,14],[20,18]].filter(([tip,joint])=>dist(0,tip)>dist(0,joint)*1.09).length>=3;
+  if(!open){anchor=null;openPath=[];heldWard=false;if(rise&&t>=singleAfter&&t-gestureAt>145){gestureAt=t;cast('spark',point,t)}return}
+  if(t<rearmAt||t<singleAfter)return;
+  openPath.push(sample);while(openPath.length&&t-openPath[0].t>450)openPath.shift();
+  const first=openPath.find(s=>t-s.t>=85&&Math.abs(s.x-p.x)>=.125&&Math.abs(s.y-p.y)<.12);
+  if(first&&t-gestureAt>300){gestureAt=t;rearmAt=t+220;openPath=[];anchor=null;cast('sweep',point,t,'camera',Math.sign(first.x-p.x));return}
+  if(!anchor||Math.hypot((p.x-anchor.x)*a,p.y-anchor.y)>Math.max(.045,size*.6))anchor=sample;
+  if(!heldWard&&t-anchor.t>=500&&t-gestureAt>300){heldWard=true;gestureAt=t;cast('ward',point,t)}
+}
+function ring(r){ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke()}
+const TAU=Math.PI*2,life=1750,trail=[];const sat=x=>Math.max(0,Math.min(1,x));const ease=x=>1-(1-sat(x))**3;
+function glow(x,y,r,h,a){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`hsl(${h} 100% 77% / ${a})`);g.addColorStop(.34,`hsl(${h} 100% 58% / ${a*.36})`);g.addColorStop(1,`hsl(${h} 100% 50% / 0)`);ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
+function ink(h,a=1){ctx.strokeStyle=`hsl(${h} 100% 80% / ${a})`;ctx.shadowColor=`hsl(${h} 100% 64%)`;ctx.shadowBlur=12}
+function poly(n,r,rot=0){ctx.beginPath();for(let j=0;j<n;j++){const a=j*TAU/n+rot;ctx[j?'lineTo':'moveTo'](Math.cos(a)*r,Math.sin(a)*r)}ctx.closePath();ctx.stroke()}
+function star(x,y,r){ctx.beginPath();for(let j=0;j<8;j++){const a=j*TAU/8,k=j%2?r*.24:r;ctx[j?'lineTo':'moveTo'](x+Math.cos(a)*k,y+Math.sin(a)*k)}ctx.closePath();ctx.fill()}
+function motes(h,m,kind){for(let i=0;i<32;i++){const n=((i*47)%101)/101,a=i*2.39996+m*.8,rad=kind==='ward'?84+38*n+28*m:12+(56+100*n)*ease(m*1.9),x=Math.cos(a)*rad,y=Math.sin(a)*rad-(kind==='spark'?m*m*28:0);ctx.fillStyle=`hsl(${h+(i%3)*18} 100% ${67+30*n}% / ${.38+.62*n})`;if(i%4===0)star(x,y,2+4*n);else{ctx.beginPath();ctx.arc(x,y,1+1.6*n,0,TAU);ctx.fill()}}}
+function drawFusion(e,m,pop,still){
+  const r=70+52*pop;
+  if(e.kind==='aegis'){
+    glow(0,0,191,49,.63);glow(0,0,72,193,.48);
+    ctx.save();ctx.rotate(m*.65);ink(54);ctx.lineWidth=2.3;ring(r);ring(r-12);poly(6,r-10);ink(189,.78);poly(6,r-10,TAU/12);ctx.restore();
+    for(let i=0;i<6;i++){ctx.save();ctx.rotate(i*TAU/6-m*1.7);ctx.translate(r*.70,0);ink(53,.91);poly(4,19,Math.PI/4);ctx.fillStyle='#fff7bb';star(0,0,9);ctx.restore()}
+    ctx.fillStyle='#e8faff';star(0,0,38);motes(46,m,'ward');
+    if(!still){ink(55,.6*(1-m));ctx.lineWidth=2;ring(r+85*ease(m))}
+  }else if(e.kind==='gate'){
+    glow(0,0,207,175,.63);glow(0,0,87,258,.62);
+    ctx.save();ctx.scale(.85,1.08);ink(185,.87);ctx.lineWidth=2;ring(r+8);ink(273,.82);ring(r-12);
+    for(let k=0;k<6;k++){ink(k%2?176:265,.9);ctx.lineWidth=k%2?1.8:3;ctx.beginPath();for(let j=0;j<=66;j++){const f=j/66,ang=f*TAU*1.2+m*9+k*TAU/6,rr=(r+13)*(1-f*.91);ctx[j?'lineTo':'moveTo'](Math.cos(ang)*rr,Math.sin(ang)*rr)}ctx.stroke()}
+    ctx.restore();for(let k=0;k<16;k++){const a=k*TAU/16-m*2,rr=r+10+(k%3)*11;ctx.fillStyle=k%2?'#b7fff6':'#efd5ff';star(Math.cos(a)*rr,Math.sin(a)*rr*.74,3+k%4)}
+  }else{
+    ctx.scale(e.dir||1,1);glow(21,0,190,29,.45);glow(48,-8,100,296,.42);
+    for(let i=0;i<17;i++){const k=((i*13)%19)/19,f=ease(m*1.5),x=-125+250*f+(k-.5)*144,y=Math.sin(i*2.4)*(25+k*104)-x*.18,len=24+k*74;const g=ctx.createLinearGradient(x-len,y+len*.26,x,y);g.addColorStop(0,'#ff933800');g.addColorStop(.62,i%3?'#ffab55b0':'#e692ffac');g.addColorStop(1,'#fff3cb');ctx.strokeStyle=g;ctx.shadowColor=i%3?'#ff9a30':'#ba62ff';ctx.shadowBlur=15;ctx.lineWidth=1.1+k*2.5;ctx.beginPath();ctx.moveTo(x-len,y+len*.26);ctx.quadraticCurveTo(x-len*.44,y+len*.19,x,y);ctx.stroke();ctx.fillStyle=i%3?'#fff3cd':'#ffd7ff';star(x,y,3+k*8)}
+  }
+}
+function draw(e,t){const u=sat((t-e.t)/life),still=reduced.matches,m=still?.27:u,pop=still?1:ease(u*6);const fade=(still?1:sat(u*20))*(1-ease((u-.46)/.54));if(fade<=0)return;const scale=Math.min(1,stage.clientWidth/610,stage.clientHeight/315);ctx.save();const combo=e.kind==='aegis'||e.kind==='gate'||e.kind==='comet';const w=stage.clientWidth,h=stage.clientHeight,margin=Math.min(135*scale,w*.36,h*.36);ctx.translate(combo?Math.max(margin,Math.min(w-margin,e.x)):e.x,combo?Math.max(margin,Math.min(h-margin,e.y)):e.y);ctx.scale(scale,scale);ctx.globalCompositeOperation='lighter';ctx.globalAlpha=fade;ctx.lineCap='round';ctx.lineJoin='round';
+if(e.kind==='aegis'||e.kind==='gate'||e.kind==='comet'){
+  drawFusion(e,m,pop,still);
+}else if(e.kind==='ward'){
+  glow(0,0,150,e.h,.44);ctx.save();ctx.scale(.66+.34*pop,.66+.34*pop);ink(e.h,.88);ctx.lineWidth=1.35;[49,72,93,104].forEach(r=>ring(r));
+  ctx.save();ctx.rotate(m*1.8);for(let i=0;i<24;i++){ctx.save();ctx.rotate(i*TAU/24);ctx.beginPath();ctx.moveTo(96,0);ctx.lineTo(i%3===0?102:99,0);ctx.stroke();ctx.restore()}
+  ctx.rotate(-Math.PI/2);for(let i=0;i<6;i++){ctx.save();ctx.rotate(i*TAU/6);ctx.translate(82,0);poly(4,6);ctx.beginPath();ctx.moveTo(-7,-7);ctx.lineTo(0,-10);ctx.lineTo(7,-7);ctx.stroke();ctx.restore()}poly(3,71);poly(3,71,Math.PI);ctx.restore();
+  ctx.save();ctx.rotate(-m*2.8);ink(211,.72);poly(6,47);poly(4,32,Math.PI/4);ctx.restore();ctx.fillStyle='#e7fdff';star(0,0,23);motes(e.h,m,'ward');ctx.restore();
+  if(!still){ink(e.h,.48*(1-ease(u*2)));ctx.lineWidth=2;ring(68+135*ease(u))}
+}else if(e.kind==='spark'){
+  glow(0,0,170,e.h,.66);glow(0,0,64,28,.62);const bloom=ease(m*2.4);ink(40,.7*(1-m));ctx.lineWidth=1.4;ring(10+110*bloom);ink(19,.42*(1-m));ring(14+141*ease(m*1.6));
+  ctx.save();ctx.rotate(m*.65);for(let i=0;i<9;i++){ctx.rotate(TAU/9);const r=9+65*bloom+(i%3)*9;const g=ctx.createLinearGradient(0,0,r,0);g.addColorStop(0,'#fff6db');g.addColorStop(.42,'#ffc15d');g.addColorStop(1,'#fb741800');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-5);ctx.quadraticCurveTo(r*.36,-12,r,0);ctx.quadraticCurveTo(r*.34,9,0,5);ctx.closePath();ctx.fill()}ctx.restore();
+  ctx.fillStyle='#fffae8';star(0,0,30*(1-.57*bloom));motes(38,m,'spark');
+}else{
+  const d=e.dir||1;ctx.scale(d,1);const head=50+m*112;glow(head,0,145,275,.45);glow(head,-4,66,191,.56);
+  for(let k=0;k<7;k++){const g=ctx.createLinearGradient(head-245,0,head+12,0);g.addColorStop(0,'#7520dc00');g.addColorStop(.36,k%2?'#8847ff99':'#2de7f788');g.addColorStop(.83,k%2?'#f199ff':'#a0fff8');g.addColorStop(1,'#ffffff08');ctx.strokeStyle=g;ctx.shadowColor=k%2?'#ba66ff':'#5cf8ff';ctx.shadowBlur=13;ctx.lineWidth=k===3?4:1.25;ctx.beginPath();for(let i=0;i<=56;i++){const f=i/56,x=head-(1-f)*(210+k*5),y=Math.sin(f*7.6-m*8+k*.5)*(17+k*3)*(1-f*.88)+(k-3)*11*(1-f);ctx[i?'lineTo':'moveTo'](x,y)}ctx.stroke()}
+  for(let i=0;i<26;i++){const n=((i*29)%61)/61,f=i/25;ctx.fillStyle=i%2?'#bdfbff':'#e6a4ff';star(head-240*f,Math.sin(i*2.4+m*4)*(12+35*f),1+2.8*n)}ctx.fillStyle='#fff';star(head,0,9+6*(1-m));
+}ctx.restore()}
+function drawTrail(t){while(trail.length&&trail[0].t<t-360)trail.shift();if(reduced.matches||trail.length<2)return;ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';for(let i=1;i<trail.length;i++){const a=trail[i-1],b=trail[i],d=Math.hypot(b.x-a.x,b.y-a.y);if(d<2||d>stage.clientWidth*.24||b.t-a.t>120)continue;const opacity=(1-(t-b.t)/360)*Math.min(1,d/15);ctx.globalAlpha=opacity*.72;ink(272);ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.lineWidth=1;ctx.strokeStyle='#eddaff';ctx.stroke()}ctx.restore()}
+function drawOrb(o,t){
+  const age=t-o.start,fade=o.end?1-sat((t-o.end)/680):1,still=reduced.matches;if(fade<=0)return;
+  const w=stage.clientWidth,h=stage.clientHeight,unit=Math.min(w,h),radius=Math.max(unit*.085,Math.min(unit*.31,o.gap*.39))*(still?1:.73+.27*ease(age/280));
+  const yaw=.36+(still?0:age*.00084),pitch=.35+o.depth*.22,roll=o.tilt,cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch),cr=Math.cos(roll),sr=Math.sin(roll);const camera=4.5-o.depth*1.2;
+  function project(x,y,z){const xx=x*cy+z*sy,zz=z*cy-x*sy,yy=y*cp-zz*sp,depth=y*sp+zz*cp,f=4.5/Math.max(.65,camera-depth);return {x:(xx*cr-yy*sr)*f*radius,y:(xx*sr+yy*cr)*f*radius,z:depth}}
+  const screenRadius=radius*4.5/Math.sqrt(camera*camera-1),alpha=fade*(still?1:ease(age/240));if(alpha<=0)return;
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=alpha*.68;
+  for(const hand of [o.l,o.r])if(hand){const g=ctx.createLinearGradient(hand.x,hand.y,o.x,o.y);g.addColorStop(0,'#6deaff');g.addColorStop(1,'#a566ffa0');ctx.strokeStyle=g;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(hand.x,hand.y);ctx.quadraticCurveTo((hand.x+o.x)/2,(hand.y+o.y)/2-16,o.x,o.y);ctx.stroke();glow(hand.x,hand.y,19,185,.63)}
+  ctx.translate(o.x,o.y);ctx.globalAlpha=alpha;glow(0,0,screenRadius*2.1,o.charged?33:250,.55);glow(-screenRadius*.18,-screenRadius*.15,screenRadius*1.48,o.charged?56:185,.42);
+  const mesh=Array.from({length:4},()=>[]);
+  function wire(curve,far,near,count=44){let prev=curve(0);for(let i=1;i<=count;i++){const p=curve(i*TAU/count),z=(p.z+prev.z)/2;mesh[z>0?near:far].push([prev,p]);prev=p}}
+  for(let lat=-2;lat<=2;lat++){const phi=lat*Math.PI/7,c=Math.cos(phi),s=Math.sin(phi);wire(a=>project(c*Math.cos(a),s,c*Math.sin(a)),0,2)}
+  for(let j=0;j<8;j++){const a=j*Math.PI/8;wire(b=>project(Math.cos(a)*Math.sin(b),Math.cos(b),Math.sin(a)*Math.sin(b)),0,2)}
+  for(let k=0;k<3;k++){const tilt=.36+k*1.02,phase=k*TAU/3;wire(a=>{const x=Math.cos(a+phase)*1.24,y=Math.sin(a+phase)*1.24;return project(x,y*Math.cos(tilt),y*Math.sin(tilt))},1,3,68)}
+  function plot(bucket,color,width){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();for(const [a,b] of mesh[bucket]){ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y)}ctx.stroke()}
+  plot(0,'#665be75a',.8);plot(1,'#bc75ff7c',1.2);
+  const core=ctx.createRadialGradient(-screenRadius*.23,-screenRadius*.19,0,0,0,screenRadius*1.01);core.addColorStop(0,'#c5fcffb8');core.addColorStop(.26,'#5aeaff67');core.addColorStop(.61,'#5045e944');core.addColorStop(.89,'#6659fa28');core.addColorStop(1,'#8edfff99');ctx.fillStyle=core;ctx.beginPath();ctx.arc(0,0,screenRadius,0,TAU);ctx.fill();
+  ctx.shadowColor=o.charged?'#ffb953':'#5adfff';ctx.shadowBlur=o.charged?13:9;plot(2,o.charged?'#ffd884bf':'#86eaffaf',1);ctx.shadowColor=o.charged?'#ff873f':'#aa67ff';plot(3,o.charged?'#fff1b7':'#dabaefe0',o.charged?2.3:1.7);ctx.shadowBlur=0;
+  const dust=[];for(let i=0;i<26;i++){const a=i*2.39996+(still?0:age*.0011),v=(i%9-4)/5,rr=1.35+(i%6)*.075;dust.push(project(Math.cos(a)*rr,Math.sin(a)*rr*v,Math.sin(a)*rr))}dust.sort((a,b)=>a.z-b.z);
+  for(const p of dust){ctx.fillStyle=p.z>0?'#eeffff':'#a291e692';star(p.x,p.y,Math.max(1.1,2.8+p.z*1.1))}ctx.fillStyle='#edffff';star(-screenRadius*.19,-screenRadius*.17,screenRadius*.21);ctx.restore();
+}
+function drawImpact(b,t){
+  const u=sat((t-b.t)/1120),stable=reduced.matches,m=stable?.38:u,fade=(1-u)**1.7;if(fade<=0)return;
+  const h=stage.clientHeight,w=stage.clientWidth,scale=Math.min(w,h)/320*b.scale*(b.charged?1.42:1);
+  ctx.save();ctx.translate(b.x,b.y);ctx.scale(scale,scale);ctx.globalCompositeOperation='lighter';ctx.globalAlpha=fade;
+  const flash=stable?.30:Math.max(0,1-u*5);glow(0,0,63+170*ease(m),b.charged?33:265,.64);glow(0,0,24+105*ease(m),b.charged?52:186,.82);glow(0,0,48,44,flash*.71);
+  for(let k=0;k<(b.charged?4:3);k++){const wave=sat(m-k*.069);if(!wave)continue;ink(b.charged?(k%2?30:52):k===1?280:183,.9-wave*.55);ctx.lineWidth=2.5-wave*1.4;ring(17+193*ease(wave));}
+  for(let i=0;i<48;i++){const a=i*2.39996,n=((i*53)%101)/101,dx=Math.cos(a),dy=Math.sin(a),r=(38+n*142)*ease(m*1.2),x=dx*r,y=dy*r+(stable?0:m*m*(17+n*62)),tail=(7+n*27)*(1-m*.63);const g=ctx.createLinearGradient(x-dx*tail,y-dy*tail,x,y);g.addColorStop(0,'#a685ff00');g.addColorStop(1,b.charged?(i%3?'#ffe08e':'#ff9757'):i%5===0?'#ffd2a6':i%2?'#cdfaff':'#c08aff');ctx.strokeStyle=g;ctx.lineWidth=.65+n*1.65;ctx.shadowBlur=0;ctx.beginPath();ctx.moveTo(x-dx*tail,y-dy*tail);ctx.lineTo(x,y);ctx.stroke();if(i%5===0){ctx.fillStyle=i%2?'#fff0d5':'#dffcff';star(x,y,2+n*5)}}
+  if(flash){ctx.fillStyle=`rgb(235 249 255 / ${flash*.72})`;star(0,0,35+flash*28)}ctx.restore();
+}
+function renderFlights(t){
+  const w=stage.clientWidth,h=stage.clientHeight,unit=Math.min(w,h);if(!unit)return;
+  for(let i=flights.length-1;i>=0;i--){
+    const f=flights[i],dt=Math.max(0,(t-f.start)/1000),g=unit*(f.vz?.17:.54),d0=4.5-f.depth*1.2;
+    const near=2.15,far=11,until=f.vz>0?(d0-near)/f.vz:f.vz<0?(far-d0)/-f.vz:1.55;
+    const pos=s=>{const d=Math.max(near,Math.min(far,d0-f.vz*s)),perspective=d0/d;return{x:w/2+(f.x-w/2+f.vx*s)*perspective,y:h/2+(f.y-h/2+f.vy*s+.5*g*s*s)*perspective,depth:(4.5-d)/1.2,size:4.5/d}};
+    const p=pos(Math.min(dt,until)),pad=Math.max(8,Math.min(unit*.30,f.gap*.24*p.size));
+    const wall=dt>=.09&&(p.x<=pad||p.x>=w-pad||p.y<=pad||p.y>=h-pad);
+    if(wall||dt>=until){const limit=(n,max)=>Math.max(14,Math.min(max-14,n));blasts.push({x:limit(p.x,w),y:limit(p.y,h),scale:Math.max(.46,Math.min(1.48,p.size)),charged:f.charged,t,demo:f.demo});if(blasts.length>8)blasts.shift();flights.splice(i,1);if(!f.demo)message(f.charged?'Impact! Charged Parallax burst.':'Impact! Parallax burst.');continue}
+    if(!reduced.matches){ctx.save();ctx.globalCompositeOperation='lighter';for(let j=7;j>=1;j--){const tail=pos(Math.max(0,dt-j*.028));glow(tail.x,tail.y,pad*(.39+j*.075),f.charged?(j%2?48:34):j%2?186:262,.39*(1-j/9)*Math.min(1,dt*9))}ctx.restore()}
+    drawOrb({...p,gap:f.gap,tilt:f.tilt+dt*1.4,charged:f.charged,start:f.start-280,end:0},t);
+  }
+  blasts=blasts.filter(b=>t-b.t<1120);for(const blast of blasts)drawImpact(blast,t);
+}
+function drawCoil(l,r,fill,t,opacity){if(opacity<=0)return;const w=stage.clientWidth,h=stage.clientHeight,gap=Math.hypot(r.x-l.x,r.y-l.y);if(gap<1)return;
+  const size=Math.min(gap*.32,h*.23),still=reduced.matches,spin=still?1:t*.004,reach=.47+fill*.53;ctx.save();ctx.translate((l.x+r.x)/2,(l.y+r.y)/2);ctx.rotate(Math.atan2(r.y-l.y,r.x-l.x));ctx.globalCompositeOperation='lighter';ctx.globalAlpha=opacity;
+  glow(0,0,Math.max(3,size*2.13),41,.25+.52*fill);const paths=[[],[]];
+  for(let lane=0;lane<3;lane++){let prev;for(let j=0;j<=62;j++){const u=j/62,a=u*TAU*2.2+spin+lane*TAU/3,rad=(.42+.58*Math.sin(u*Math.PI))*size*reach,z=Math.sin(a)*rad,p=1/(1-z/(Math.max(w,h)*.52)),pt={x:(u-.5)*gap*p,y:Math.cos(a)*rad*p,z};if(prev)paths[z+prev.z>=0?1:0].push([prev,pt]);prev=pt}}
+  paths.forEach((segments,front)=>{ctx.strokeStyle=front?'#ffdd87':'#af73f470';ctx.lineWidth=front?1.8+fill*1.5:1;ctx.shadowColor=front?'#ffae45':'#ab75ff';ctx.shadowBlur=front?14:5;ctx.beginPath();for(const [a,b] of segments){ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y)}ctx.stroke()});ctx.shadowBlur=0;
+  for(let k=0;k<15;k++){const u=(k/15+(still?0:t*.00064))%1,ph=k*2.4+spin,x=(u-.5)*gap*(1-fill*.45),y=Math.cos(ph)*size*.79*Math.sin(Math.PI*u);ctx.fillStyle=k%3?'#fff0be':'#d8b7ff';star(x,y,2.2+(k%4)*.85)}ctx.fillStyle='#fff5d5';star(0,0,8+fill*size*.41);ctx.restore();
+}
+function renderCoil(t){if(coil){const a=coil.done?1-(t-coil.done)/850:1;if(a<=0)coil=null;else drawCoil(coil.l,coil.r,coil.fill,t,Math.min(1,a))}const age=t-coilDemo;if(age<2100){const w=stage.clientWidth,h=stage.clientHeight;drawCoil({x:w*.25,y:h*.52},{x:w*.75,y:h*.46},ease(age/1130),t,1-sat((age-1330)/770))}}
+function renderOrbs(t){if(orb){if(orb.end&&t-orb.end>=680)orb=null;else drawOrb(orb,t)}
+  const demo=t-orbDemo,show=demo<5200;stage.classList.toggle('orb-demo',show||t-throwDemo<2350||t-coilDemo<2100);if(!show)return;
+  const w=stage.clientWidth,h=stage.clientHeight,still=reduced.matches,s=still?.65:(1-Math.cos(demo*.00145))*.5,x=w*.5,y=h*.5,gap=Math.min(w*.63,h*1.2)*(.48+.49*s),yy=still?0:Math.sin(demo*.0016)*h*.085;drawOrb({x,y,gap,tilt:Math.atan2(yy*2,gap),depth:still?.35:(s-.44)*1.5,l:{x:x-gap/2,y:y-yy},r:{x:x+gap/2,y:y+yy},start:orbDemo,end:demo>=4500?orbDemo+4500:0},t);
+}
+function frame(t){if(stream&&model&&video.readyState>=2&&t-lastTrack>42&&video.currentTime!==lastVideo){lastVideo=video.currentTime;lastTrack=t;try{track(t);if(point&&!reduced.matches)trail.push({...point,t});else trail.length=0}catch{shutdown('Hand tracking could not continue. Retry the camera or preview a spell.')}}ctx.clearRect(0,0,stage.clientWidth,stage.clientHeight);if(!stream)trail.length=0;updateFusion(t);drawTrail(t);if(point){glow(point.x,point.y,19,269,.55);ctx.fillStyle='#f5e7ff';ctx.beginPath();ctx.arc(point.x,point.y,2.5,0,TAU);ctx.fill()}effects=effects.filter(e=>t-e.t<life);effects.forEach(e=>draw(e,t));renderOrbs(t);renderFlights(t);renderCoil(t);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+</script></body></html>
